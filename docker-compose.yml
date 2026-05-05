@@ -1,10 +1,19 @@
+version: '3.8'
 services:
-  db:
+  db-gestion:
     image: postgres:15
-    container_name: postgres-db
     environment:
-      POSTGRES_USER: marcelo_user
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: colegio_ohiggins
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: gestion_academica
     ports:
       - "5432:5432"
+
+  db-asistencia:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: asistencia
+    ports:
+      - "5433:5432"
