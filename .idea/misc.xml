@@ -8,6 +8,9 @@
         <option value="$PROJECT_DIR$/ms-asistencia/ms-asistencia/pom.xml" />
         <option value="$PROJECT_DIR$/ms-comunicaciones/pom.xml" />
         <option value="$PROJECT_DIR$/ms-gestion-academica/ms-gestion-academica/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-gestion-academica/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-asistencia/pom.xml" />
+        <option value="$PROJECT_DIR$/api-bff/pom.xml" />
       </list>
     </option>
   </component>
