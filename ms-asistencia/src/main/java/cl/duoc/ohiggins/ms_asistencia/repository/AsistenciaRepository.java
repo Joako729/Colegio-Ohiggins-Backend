@@ -7,7 +7,6 @@ import java.util.List;
 
 @Repository
 public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
-
-    // Para buscar el historial de asistencia de un alumno específico
-    List<Asistencia> findByEstudianteId(Long estudianteId);
+    // Permite buscar el historial de un alumno por su RUT
+    List<Asistencia> findByRutEstudiante(String rutEstudiante);
 }
