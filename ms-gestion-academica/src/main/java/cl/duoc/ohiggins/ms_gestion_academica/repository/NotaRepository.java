@@ -7,7 +7,6 @@ import java.util.List;
 
 @Repository
 public interface NotaRepository extends JpaRepository<Nota, Long> {
-
-    // Método para que el estudiante vea solo SUS notas
-    List<Nota> findByEstudianteId(Long estudianteId);
+    // Esto nos permitirá buscar las notas de un estudiante específico por su RUT
+    List<Nota> findByRutEstudiante(String rutEstudiante);
 }
