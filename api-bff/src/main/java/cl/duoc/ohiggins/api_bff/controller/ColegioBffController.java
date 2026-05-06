@@ -3,46 +3,59 @@ package cl.duoc.ohiggins.api_bff.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
-import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000") // Permite la conexión con tu frontend Next.js
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/bff")
 public class ColegioBffController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // Direcciones de los microservicios (Puertos 8081 y 8082)[cite: 1, 3]
+    // URLs de Microservicios (Asegúrate de que los puertos sean correctos)
     private final String URL_NOTAS = "http://localhost:8081/api/notas";
+    private final String URL_ASIGNATURAS = "http://localhost:8081/api/asignaturas";
     private final String URL_ASISTENCIA = "http://localhost:8082/api/asistencia";
 
-    // --- SECCIÓN DE GESTIÓN ACADÉMICA (NOTAS) ---[cite: 2]
+    // --- ENDPOINTS ASIGNATURAS ---
+    @GetMapping("/asignaturas")
+    public Object[] listarAsignaturas() {
+        return restTemplate.getForObject(URL_ASIGNATURAS, Object[].class);
+    }
 
+    @PostMapping("/asignaturas")
+    public ResponseEntity<Object> crearAsignatura(@RequestBody Object asignatura) {
+        return ResponseEntity.ok(restTemplate.postForObject(URL_ASIGNATURAS, asignatura, Object.class));
+    }
+
+    @PutMapping("/asignaturas/{id}")
+    public void actualizarAsignatura(@PathVariable Long id, @RequestBody Object asignatura) {
+        restTemplate.put(URL_ASIGNATURAS + "/" + id, asignatura);
+    }
+
+    @DeleteMapping("/asignaturas/{id}")
+    public void eliminarAsignatura(@PathVariable Long id) {
+        restTemplate.delete(URL_ASIGNATURAS + "/" + id);
+    }
+
+    // --- ENDPOINTS NOTAS ---
     @PostMapping("/notas/registrar")
     public ResponseEntity<Object> registrarNota(@RequestBody Object nota) {
-        // Envía la nota al ms-gestion-academica
-        Object respuesta = restTemplate.postForObject(URL_NOTAS, nota, Object.class);
-        return ResponseEntity.ok(respuesta);
+        return ResponseEntity.ok(restTemplate.postForObject(URL_NOTAS, nota, Object.class));
     }
 
     @GetMapping("/notas/estudiante/{rut}")
     public Object[] consultarNotas(@PathVariable String rut) {
-        // Obtiene la lista de notas del ms-gestion-academica
         return restTemplate.getForObject(URL_NOTAS + "/estudiante/" + rut, Object[].class);
     }
 
-    // --- SECCIÓN DE REGISTRO DE ASISTENCIA ---[cite: 2]
-
+    // --- ENDPOINTS ASISTENCIA ---
     @PostMapping("/asistencia/registrar")
     public ResponseEntity<Object> registrarAsistencia(@RequestBody Object asistencia) {
-        // Envía la asistencia al ms-asistencia
-        Object respuesta = restTemplate.postForObject(URL_ASISTENCIA + "/registrar", asistencia, Object.class);
-        return ResponseEntity.ok(respuesta);
+        return ResponseEntity.ok(restTemplate.postForObject(URL_ASISTENCIA + "/registrar", asistencia, Object.class));
     }
 
     @GetMapping("/asistencia/estudiante/{rut}")
     public Object[] consultarAsistencia(@PathVariable String rut) {
-        // Obtiene el historial de asistencia del ms-asistencia
         return restTemplate.getForObject(URL_ASISTENCIA + "/estudiante/" + rut, Object[].class);
     }
 }
