@@ -18,8 +18,25 @@ public class ColegioBffController {
 
     // --- ENDPOINTS ASIGNATURAS ---
     @GetMapping("/asignaturas")
-    public Object[] listarAsignaturas() {
-        return restTemplate.getForObject(URL_ASIGNATURAS, Object[].class);
+    public ResponseEntity<Object> listarAsignaturas() {
+        // Log para saber que la petición llegó al BFF
+        System.out.println("Solicitando asignaturas al microservicio...");
+
+        try {
+            // Intentamos obtener los datos del microservicio
+            Object[] asignaturas = restTemplate.getForObject(URL_ASIGNATURAS, Object[].class);
+
+            // Si funciona, devolvemos 200 OK con los datos
+            return ResponseEntity.ok(asignaturas);
+
+        } catch (Exception e) {
+            // FALLBACK: Si el microservicio falla o está apagado, capturamos el error
+            System.err.println("Error crítico en el microservicio: " + e.getMessage());
+
+            // Retornamos un 503 (Servicio no disponible) con un JSON amigable
+            String mensajeError = "{\"error\": \"Servicio de gestión académica no disponible\", \"detalle\": \"El circuito está abierto\"}";
+            return ResponseEntity.status(503).body(mensajeError);
+        }
     }
 
     @PostMapping("/asignaturas")
